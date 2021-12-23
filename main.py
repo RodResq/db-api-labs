@@ -31,10 +31,19 @@ print(cursor.fetchmany(1))
 # print(cursor.fetchall())
 
 # Passando parametro para a consulta
-nome = "Josefina"
-idade = 80
-cursor.execute("UPDATE cliente SET nome=%(nome)s, idade=%(idade)s WHERE idCLiente=2", ({'nome': nome, 'idade': idade}))
-cursor.execute("SELECT * FROM cliente")
-print(cursor.fetchall())
+# nome = "Josefina"
+# idade = 80
+# cursor.execute("UPDATE cliente SET nome=%(nome)s, idade=%(idade)s WHERE idCLiente=2", ({'nome': nome, 'idade': idade}))
+# cursor.execute("SELECT * FROM cliente")
+# print(cursor.fetchall())
+
+# Inserindo Varios Registro
+cursor.executemany("INSERT INTO cliente (nome, idade) VALUES (%s, %s)",
+                   (
+                       ('Jose', 50),
+                       ('Maria', 50),
+                       ('Pedro', 45),
+                       ('Fabio', 35)
+                   ))
 
 db.close()
