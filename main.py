@@ -7,43 +7,25 @@ cursor = db.cursor()
 cursor.execute("SELECT * FROM cliente")
 print(cursor.fetchmany(1))
 
-# Transacao
-# try:
-#     db.begin()
-#     cursor.execute("INSERT INTO cliente (nome, idade) VALUES ('Pedro', 25)")
-#     cursor.execute("INSERT INTO cliente (nome, idade) VALUES ('Joana', 25)")
-#     db.commit()
-# except:
-#     db.rollback()
-# print(cursor.execute("SELECT * FROM cliente"))
-# print(cursor.fetchall())
 
-# cursor.execute("SELECT * FROM cliente")
-# print(cursor.fetchall())
-# print(cursor.lastrowid)
-#
-# cursor.execute("UPDATE cliente SET nome='Ana' WHERE idCLiente=2")
-# cursor.execute("SELECT * FROM cliente")
-# print(cursor.fetchall())
-#
-# cursor.execute("DELETE FROM cliente WHERE idCliente=9")
-# cursor.execute("SELECT * FROM cliente")
-# print(cursor.fetchall())
+# Refatorando o Codiga para aplicar a POO
+def listar_clientes():
+    cursor.execute("SELECT * FROM cliente")
+    print(cursor.fetchall())
 
-# Passando parametro para a consulta
-# nome = "Josefina"
-# idade = 80
-# cursor.execute("UPDATE cliente SET nome=%(nome)s, idade=%(idade)s WHERE idCLiente=2", ({'nome': nome, 'idade': idade}))
-# cursor.execute("SELECT * FROM cliente")
-# print(cursor.fetchall())
 
-# Inserindo Varios Registro
-cursor.executemany("INSERT INTO cliente (nome, idade) VALUES (%s, %s)",
-                   (
-                       ('Jose', 50),
-                       ('Maria', 50),
-                       ('Pedro', 45),
-                       ('Fabio', 35)
-                   ))
+def inserir_cliente(cliente):
+    cursor.execute("INSERT INTO cliente (nome, idade) VALUES (%s, %s)", cliente.nome, cliente.idade)
+
+
+def editar_cliente(id_cliente, cliente):
+    cursor.execute("UPDATE cliente SET nome=%(nome)s, idade=%(idade)s WHERE idCLiente=%(id_cliente)s", ({'nome': cliente.nome, 'idade': cliente.idade, 'id_cliente': id_cliente}))
+
+
+def remover_cliente(id_cliente):
+    cursor.execute("DELETE FROM cliente WHERE idCliente=%s", (id_cliente, ))
+
+
+listar_clientes()
 
 db.close()
