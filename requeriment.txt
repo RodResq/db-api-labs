@@ -4,7 +4,7 @@ charset-normalizer==2.0.9
 docutils==0.18.1
 idna==3.3
 joblib==1.1.0
-Kivi==0.0.5
+Kivy==2.0.0
 Kivy-Garden==0.1.4
 mysqlclient==2.1.0
 numpy==1.21.5
