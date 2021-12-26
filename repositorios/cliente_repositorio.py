@@ -1,4 +1,5 @@
-import fabrica_conexao
+from fabricas import fabrica_conexao
+
 
 class ClienteRepositorio():
 
