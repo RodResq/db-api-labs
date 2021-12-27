@@ -1,13 +1,21 @@
 from kivy.app import App
+from kivy.properties import partial
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
+from kivy.uix.popup import Popup
 from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.widget import Widget
 
 from entidades import cliente
 from repositorios import cliente_repositorio
 
+
+class ExclucaoPopup(Popup):
+    pass
+
+class MessagemPopup(Popup):
+    pass
 
 class BotaoListagem(ToggleButton):
     def __init__(self, cliente_id, cliente_nome, cliente_idade, **kwargs):
@@ -39,8 +47,25 @@ class Principal(BoxLayout):
         id = Principal.id_cliente
         nome = self.ids.nome.text
         idade = self.ids.idade.text
-        cli = cliente.Cliente(nome, idade)
-        cliente_repositorio.ClienteRepositorio.editar_cliente(id, cli)
+
+        if nome == '' or idade == '':
+            MessagemPopup().open()
+        else:
+            cli = cliente.Cliente(nome, idade)
+            cliente_repositorio.ClienteRepositorio.editar_cliente(id, cli)
+            self.ids.nome.text = ''
+            self.ids.idade.text = ''
+            self.listar_clientes()
+
+    def remover_cliente(self):
+        id = Principal.id_cliente
+        popup = ExclucaoPopup()
+        popup.funcao = partial(self.remover, id)
+        popup.open()
+
+    def remover(self, id):
+        print(id)
+        cliente_repositorio.ClienteRepositorio.remover_cliente(id)
         self.listar_clientes()
 
     def listar_clientes(self):
@@ -57,11 +82,14 @@ class Principal(BoxLayout):
         nome = self.ids.nome.text
         idade = self.ids.idade.text
 
-        cli = cliente.Cliente(nome, idade)
-        cliente_repositorio.ClienteRepositorio.inserir_cliente(cli)
-        self.ids.nome.text = ''
-        self.ids.idade.text = ''
-        self.listar_clientes()
+        if nome == '' or idade == '':
+            MessagemPopup().open()
+        else:
+            cli = cliente.Cliente(nome, idade)
+            cliente_repositorio.ClienteRepositorio.inserir_cliente(cli)
+            self.ids.nome.text = ''
+            self.ids.idade.text = ''
+            self.listar_clientes()
 
 
 class Crud(App):
